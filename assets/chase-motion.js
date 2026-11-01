@@ -1,26 +1,37 @@
 // Shared movement rules, also embedded in the local HTML for file:// support.
 const ChaseMotion = (() => {
-  const rules=Object.freeze({baseSpeed:4,cowSpeed:4.3,cowStartSpeed:3.8,initialGap:12,idleBrake:.8,errorBrake:1.1,errorDuration:2,sprintBonus:3,catchGap:.7});
+  const rules=Object.freeze({baseSpeed:4,cowSpeed:4.3,spellingCowSpeed:4.7,cowStartSpeed:3.8,initialGap:12,idleBrake:.8,errorBrake:.45,errorDuration:.65,errorFloor:2.8,sprintBonus:3,catchGap:.7});
   function reset(run){
     run.cowSlowLeft=0;
+    run.cowSpeed=rules.cowSpeed;
+    run.sprintDurationScale=1;
+    run.errorStreak=0;run.lastErrorTime=-Infinity;
     run.v=rules.baseSpeed;run.bossX=run.x-rules.initialGap;
     run.chaseTime=0;run.wordDeadline=Infinity;run.wordBudget=5;run.brakeUntil=0;run.sprintLeft=0;
   }
-  function startWord(run,length){
-    run.wordBudget=Math.max(3,Math.min(8,1.4+.45*Math.max(1,length)));
+  function startWord(run,length,listening=false){
+    run.cowSpeed=listening?rules.cowSpeed:rules.spellingCowSpeed;
+    run.sprintDurationScale=listening?1:.9;
+    run.wordBudget=Math.max(5.5,Math.min(12,3.5+.6*Math.max(1,length)))+(listening?2.5:0);
     run.wordDeadline=run.chaseTime+run.wordBudget;
+    run.errorStreak=0;
   }
-  // Partial typing does not extend a word's deadline or restore speed.
-  function correctLetter(run){}
+  // Correct input restores the runner; only a whole word earns the sprint.
+  function correctLetter(run){
+    run.errorStreak=0;run.brakeUntil=run.chaseTime;
+    run.v=Math.max(run.v,rules.baseSpeed);
+    run.wordDeadline=Math.max(run.wordDeadline,run.chaseTime+1.5);
+  }
   function wrongLetter(run){
-    run.brakeUntil=run.chaseTime+rules.errorDuration;
+    run.errorStreak=run.chaseTime-run.lastErrorTime<2?Math.min(4,run.errorStreak+1):1;
+    run.lastErrorTime=run.chaseTime;
+    run.brakeUntil=run.chaseTime+Math.min(1.4,rules.errorDuration+.25*(run.errorStreak-1));
     run.sprintLeft=0;
-    // Cancel the burst timer, then brake from the current speed without a jump.
   }
   function correctWord(run){
     run.wordDeadline=Infinity;run.brakeUntil=0;
     // Length-aware reward lets an on-time long word offset the cow's advantage.
-    run.sprintLeft=Math.max(.6,Math.min(1.1,((rules.cowSpeed-rules.baseSpeed)*run.wordBudget+.65)/rules.sprintBonus));
+    run.sprintLeft=Math.max(.6,Math.min(1.1,((rules.cowSpeed-rules.baseSpeed)*run.wordBudget+.65)/rules.sprintBonus))*run.sprintDurationScale;
     run.v=rules.baseSpeed+rules.sprintBonus;
   }
   function step(run,seconds){
@@ -40,13 +51,13 @@ const ChaseMotion = (() => {
         if(error)duration=Math.min(duration,run.brakeUntil-run.chaseTime);
         else if(!idle)duration=Math.min(duration,run.wordDeadline-run.chaseTime);
         const settling=!error&&!idle&&run.v>rules.baseSpeed;
-        const brake=error?rules.errorBrake:idle?rules.idleBrake:settling?4:0;
-        const floor=settling?rules.baseSpeed:0;
-        const moving=brake>0?Math.min(duration,(run.v-floor)/brake):duration;
+        const brake=error?rules.errorBrake+Math.min(.4,.13*(run.errorStreak-1)):idle?rules.idleBrake:settling?4:0;
+        const floor=error?Math.min(run.v,rules.errorFloor):settling?rules.baseSpeed:0;
+        const moving=brake>0?Math.max(0,Math.min(duration,(run.v-floor)/brake)):duration;
         run.x+=run.v*moving-.5*brake*moving*moving+floor*(duration-moving);
         run.v=Math.max(floor,run.v-brake*duration);
       }
-      const cowSpeed=run.cowSlowLeft>1e-9?rules.cowStartSpeed:rules.cowSpeed;
+      const cowSpeed=run.cowSlowLeft>1e-9?rules.cowStartSpeed:run.cowSpeed;
       run.bossX+=cowSpeed*duration;
       if(run.cowSlowLeft>1e-9)run.cowSlowLeft=Math.max(0,run.cowSlowLeft-duration);
       run.chaseTime+=duration;left-=duration;

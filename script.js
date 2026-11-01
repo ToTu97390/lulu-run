@@ -213,7 +213,7 @@ function prepareGame(force=false){
   const key=`${state.scene}:${state.runner}`;
   if(!force&&gameBoot.key===key&&frame.getAttribute('src')===gameBoot.url)return;
   gameBoot.key=key;gameBoot.id++;gameBoot.ready=false;gameBoot.failed=false;
-  gameBoot.url=`assets/original-game.html?luluScene=${state.scene}&runner=${state.runner}&boot=${gameBoot.id}&v=16`;
+  gameBoot.url=`assets/original-game.html?luluScene=${state.scene}&runner=${state.runner}&boot=${gameBoot.id}&v=17balance`;
   frame.onload=null;frame.src=gameBoot.url;
 }
 function sendGameStart(){
