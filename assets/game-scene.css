@@ -1,0 +1,153 @@
+.lulu-game body{background:#fff2dc;color:#693516;font-family:'Noto Sans SC',system-ui,sans-serif}
+.lulu-game #c{visibility:hidden}
+#luluGameWorld{position:fixed;inset:0;overflow:hidden;pointer-events:none;background:#fff1d7}
+.game-environment{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.game-performer{position:absolute;left:44%;bottom:18%;width:17%;height:39%;object-fit:contain;filter:drop-shadow(0 8px 5px #75402335)}
+.game-cow{position:absolute;bottom:18%;width:15%;height:32%;overflow:hidden;animation:chase-hop .42s ease-in-out infinite alternate;filter:drop-shadow(0 7px 5px #75402330)}
+.game-cow img{position:absolute;width:348%;height:196%;max-width:none;left:-208%;top:-60%;clip-path:polygon(65.5% 29.8%,89.7% 29.8%,89.7% 83.4%,63.4% 83.4%,63.4% 61.6%,59.5% 61.6%,59.5% 44.1%,64.6% 44.1%,64.6% 42%,65.5% 42%)}
+.game-scene-name{position:absolute;top:19px;left:50%;transform:translateX(-50%);padding:9px 23px;background:#fff9ebeb;border:2px solid #fff;border-radius:999px;color:#87421c;font-weight:800;box-shadow:0 4px 14px #85503222}
+.lulu-game .h-gap,.lulu-game .h-dist,.lulu-game .h-stats,.lulu-game .h-word,.lulu-game .h-ch,.lulu-game .r-card{background:#fff9eeeb!important;border-color:#ffdab0!important;color:#743718!important;box-shadow:0 6px 24px #7d482329!important;backdrop-filter:blur(8px)}
+.lulu-game .h-word{bottom:3%;border-radius:25px!important}
+.lulu-game .h-word .meaning,.lulu-game .h-word .letters,.lulu-game .h-dist b,.lulu-game .h-tile b,.lulu-game .h-gap .num{color:#713816!important;text-shadow:none!important}
+.lulu-game .h-word .letters .done{color:#71ad50!important}
+.lulu-game #envDock{display:none!important}
+.lulu-game #count .cd{box-sizing:border-box;width:min(445px, calc(100vw - 32px));background:#fff8e7e8;color:#7c3c1a;border:3px solid #ffd27e;border-radius:36px;box-shadow:0 8px 36px #91592335}
+.lulu-game #count .cd b{color:#f7a92c;text-shadow:0 3px 0 white}
+.paused .game-cow{animation-play-state:paused}
+.lulu-game .h-gap,.lulu-game .h-dist,.lulu-game .h-ch,.lulu-game .h-tile,.lulu-game .h-word .badge,.lulu-game .h-word .meaning,.lulu-game .h-word .speak,.lulu-game #count .cd span{clip-path:none!important;transform:none!important;border-radius:16px;border-color:#f9c987!important}
+.lulu-game .h-gap .gbar .fill{background:#ffb333!important}
+.lulu-game .h-ch .tag,.lulu-game .h-word .badge,.lulu-game .h-word .speak,.lulu-game #count .cd span{background:#ffe5a8!important;color:#87451e!important;border:0!important;box-shadow:none!important}
+.lulu-game #count .cd b{-webkit-text-stroke:0!important}
+.lulu-game .h-word .meaning{border:0!important;box-shadow:none!important;background:transparent!important}
+.game-pause{position:absolute;top:15%;right:18px;border:2px solid #fff;border-radius:999px;background:#fff5dbed;color:#87451e;padding:10px 18px;font-family:inherit;font-size:16px;font-weight:700;pointer-events:auto;cursor:pointer}
+@keyframes chase-hop{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-8px) rotate(2deg)}}
+@media(prefers-reduced-motion:reduce){.game-cow{animation:none}}
+
+#luluGameWorld.paused~#count{visibility:hidden}
+.lulu-game #pause .r-card{clip-path:none!important;transform:none!important;border-radius:26px}
+.lulu-game .h-dist,.lulu-game .h-ch{transform:translateX(-50%)!important}
+.lulu-game .h-dist>*{transform:none!important}
+.game-scene-name{top:17%;font-size:clamp(10px,1.1vw,16px);padding:5px 14px}
+.lulu-game .letters{transform:none!important;gap:5px}
+.lulu-game .letters .L{background:#fff0c9;color:#7f451d;border-color:#ffdba3;box-shadow:none;transform:none;border-radius:9px}
+.lulu-game .letters .L.cur{background:#ffc95c;color:#713716}
+.lulu-game .letters .L.ok{background:#dcefc9;color:#548a34}
+@media(max-height:600px){
+ .lulu-game .h-gap{min-width:0;width:27%;padding:8px 12px;gap:4px;left:12px;top:12px}
+ .lulu-game .h-gap .num{font-size:clamp(22px,4vw,38px)}
+ .lulu-game .h-gap .lab{font-size:9px}
+ .lulu-game .h-dist{top:12px;padding:5px 12px;gap:6px}
+ .lulu-game .h-dist b{font-size:24px}
+ .lulu-game .h-dist span{font-size:10px}
+ .lulu-game .h-ch{top:54px}
+ .lulu-game .h-ch .tag{font-size:10px}
+ .lulu-game .h-stats{top:12px;right:12px}
+ .lulu-game .h-word{width:72%;gap:5px;padding:5px 10px;bottom:2%}
+ .lulu-game .letters .L{font-size:22px;min-width:25px;height:31px;line-height:31px;padding:0 4px}
+ .lulu-game .w-top{gap:7px}
+ .lulu-game .w-top .meaning{font-size:16px}
+ .lulu-game .w-hint{font-size:9px;padding:3px 7px}
+ .game-pause{top:24%;font-size:12px;padding:6px 12px}
+}
+
+/* Countdown card */
+.lulu-game #count .cd{
+  position:relative;box-sizing:border-box;width:min(445px, calc(100vw - 32px));height:auto;aspect-ratio: 1.35;
+  min-width:min(320px,calc(100vw - 24px));min-height:230px;
+  display:flex;align-items:center;justify-content:center;gap:0;
+  background:rgba(255,249,231,.87);border:clamp(5px,.7vw,12px) solid #ffdb80;
+  border-radius:36px;box-shadow:inset 0 0 0 4px #fff7dc,0 8px 0 #eaa739,0 18px 34px #a6633345;
+}
+.lulu-game #count .cd::before{
+  content:'🐾 准备出发';position:absolute;z-index:2;top:-8%;left:50%;transform:translateX(-50%);
+  white-space:nowrap;padding:.16em .8em .2em;background:#fff0ce;border:3px solid #fff8e7;
+  border-radius:40px;color:#904409;font-size:clamp(19px,3vw,32px);font-weight:900;
+  box-shadow:0 5px 0 #f2c77c,0 9px 13px #b67a3b35;
+}
+.lulu-game #count .cd::after{
+  content:'✦';position:absolute;top:9%;right:4%;color:#ffc52d;font-size:clamp(25px,4vw,62px);
+  text-shadow:0 2px 0 #fff5d4;
+}
+.lulu-game #count .cd b{
+  display:block;font-family:system-ui,sans-serif;font-size:min(170px, 27vh, 34vw);
+  position:absolute;left:50%;top:46%;line-height:.9;font-weight:1000;transform:translate(-50%,-50%);animation:countdown-upright .9s ease-out;
+  color:#ffad23;-webkit-text-stroke:clamp(5px,.8vw,12px) #fff5e5!important;
+  paint-order:stroke fill;text-shadow:0 8px 0 #f78200,0 17px 0 #ffc46e,0 24px 16px #b872343c;
+}
+.lulu-game #count .cd #countSub{
+  position:absolute;bottom:2%;left:50%;transform:translateX(-50%)!important;
+  min-width:24%;box-sizing:border-box;text-align:center;white-space:nowrap;
+  padding:.25em 1em!important;background:#ffdc60!important;border:3px solid #ffc846!important;
+  border-radius:999px!important;color:#8a420d!important;font-size:clamp(16px,2vw,22px);font-weight:900;
+  box-shadow:0 4px 0 #ecab37!important;
+}
+.lulu-game #count .cd #countSub::before,.lulu-game #count .cd #countSub::after{content:'🐾';font-size:.62em;margin:0 .65em}
+@media(max-height:500px){.lulu-game #count .cd{height:min(76vh, 330px);aspect-ratio:auto}.lulu-game #count .cd b{font-size:min(150px, 35vh, 34vw)}}
+
+@keyframes countdown-upright{0%{transform:translate(-50%,-50%) scale(1.35);opacity:0}25%{transform:translate(-50%,-50%) scale(1);opacity:1}100%{transform:translate(-50%,-50%) scale(.96);opacity:1}}
+
+/* Transparent pause artwork, centered over the frozen game. */
+.lulu-game #pause{position:fixed;inset:0;z-index:120;display:grid;place-items:center;background:transparent!important;backdrop-filter:none!important}
+.lulu-game #pause[hidden]{display:none!important}
+.lulu-game #pause .r-card{position:relative;inset:auto;left:auto;top:auto;margin:0;justify-self:center;align-self:center;box-sizing:border-box;aspect-ratio:1490/800;width:min(43vw,74.5vh);height:auto;min-width:0;min-height:0;max-width:none;max-height:none;padding:0;border:0!important;border-radius:0!important;box-shadow:none!important;background:transparent url('pause-cutout.png') 32.967% 70.922% / 112.2148% 117.625% no-repeat!important;backdrop-filter:none!important;transform:none!important;clip-path:none!important;overflow:visible}
+.lulu-game #pause .r-head,.lulu-game #pause .p-keys{display:none}
+.lulu-game #pause .r-btns{display:contents}
+.lulu-game #pause .pbtn{position:absolute;top:70.875%;height:16.875%;padding:0;border:0!important;box-shadow:none!important;background:transparent!important;color:transparent!important;font-size:0;clip-path:none!important;transform:none!important;border-radius:30px;cursor:pointer}
+.lulu-game #pause .pbtn::before,.lulu-game #pause .pbtn::after{display:none!important}
+.lulu-game #pause .pbtn:hover,.lulu-game #pause .pbtn:focus-visible{outline:3px solid #ffbf39;outline-offset:2px}
+.lulu-game #pause #resumeBtn{left:23.49%;width:35.24%}
+.lulu-game #pause #restartPauseBtn{left:59.46%;width:16.11%}
+.lulu-game #pause #quitBtn{left:76.17%;width:18.12%}
+
+/* Hide the chapter strip and the WPM/accuracy row in the game HUD. */
+.lulu-game #hud .h-ch,.lulu-game #hud .h-stats>.h-row{display:none!important}
+
+.lulu-game #luluGameWorld .game-scene-name{display:none!important}
+
+.lulu-game #hud #comboBox,.lulu-game #hud #fxBox{display:none!important}
+
+/* Warm, non-blocking word celebration, independent of the existing HUD layout. */
+#wordEncouragement{position:fixed;left:50%;top:29%;transform:translate(-50%,-50%);z-index:45;pointer-events:none;user-select:none;width:max-content;max-width:84vw}
+#wordEncouragement[hidden]{display:none}
+.word-encouragement{position:relative;padding:.5vw 2.2vw;animation:encourage-bounce 1.2s both;will-change:transform,opacity}
+.encourage-text{display:block;position:relative;z-index:1;font-family:'Arial Rounded MT Bold','Trebuchet MS',system-ui,sans-serif;font-weight:1000;font-size:4.4vw;line-height:1.08;letter-spacing:.025em;white-space:nowrap;color:#ffb52e;-webkit-text-stroke:.11vw #fff9e6;paint-order:stroke fill;text-shadow:0 .13vw 0 #f28a20,0 .28vw 0 #a75b23,0 .42vw .3vw #a76b3540}
+.word-encouragement::before{content:'';position:absolute;inset:-1vw -3vw;background:radial-gradient(ellipse,#fff4ce88 0%,#ffe5a533 45%,transparent 72%);border-radius:50%;filter:blur(.4vw)}
+.encourage-star{position:absolute;color:#ffd45e;font-size:1.8vw;line-height:1;text-shadow:0 .1vw 0 #fff8df,0 .2vw .3vw #cc8a3230;animation:encourage-stars 1.2s both}
+.encourage-star-0{left:0;top:0;--dx:-2vw;--dy:-1.2vw;--turn:-30deg}
+.encourage-star-1{left:14%;top:-20%;--dx:-1vw;--dy:-2vw;--turn:25deg;font-size:1.1vw}
+.encourage-star-2{right:8%;top:-10%;--dx:1.4vw;--dy:-1.8vw;--turn:35deg}
+.encourage-star-3{right:-2%;top:44%;--dx:2vw;--dy:.6vw;--turn:-25deg;font-size:1.2vw}
+.encourage-star-4{left:6%;bottom:-14%;--dx:-1.6vw;--dy:1.2vw;--turn:30deg;font-size:1vw}
+.encourage-star-5{right:16%;bottom:-16%;--dx:1vw;--dy:1.5vw;--turn:-40deg;font-size:1.1vw}
+.encourage--sparkle{animation-name:encourage-sparkle}
+.encourage--burst{animation-name:encourage-burst}
+.encourage--twirl{animation-name:encourage-twirl}
+.encourage--sparkle .encourage-text{animation:encourage-shine 1.2s both}
+.encourage--burst .encourage-star{animation-name:encourage-star-burst}
+.encourage--twirl .encourage-star{animation-name:encourage-star-burst}
+@keyframes encourage-bounce{0%{opacity:0;transform:scale(.45) translateY(.7vw)}15%{opacity:1;transform:scale(1.13)}25%{transform:scale(.97)}33%,80%{opacity:1;transform:scale(1)}100%{opacity:0;transform:translateY(-2vw) scale(1.03)}}
+@keyframes encourage-sparkle{0%{opacity:0;transform:scale(.65)}17%{opacity:1;transform:scale(1.08)}28%,80%{opacity:1;transform:scale(1)}100%{opacity:0;transform:translateY(-2.2vw)}}
+@keyframes encourage-burst{0%{opacity:0;transform:scale(.5) rotate(-3deg)}17%{opacity:1;transform:scale(1.1) rotate(1deg)}30%,80%{opacity:1;transform:scale(1) rotate(0)}100%{opacity:0;transform:translateY(-1.8vw) scale(1.02)}}
+@keyframes encourage-twirl{0%{opacity:0;transform:scale(.55) rotate(-8deg)}18%{opacity:1;transform:scale(1.09) rotate(3deg)}32%,79%{opacity:1;transform:scale(1) rotate(0)}100%{opacity:0;transform:translateY(-2.3vw) rotate(4deg) scale(1.02)}}
+@keyframes encourage-stars{0%,5%{opacity:0;transform:scale(.3)}24%{opacity:1;transform:scale(1.1) rotate(var(--turn))}35%,78%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:translateY(-1vw) scale(.8)}}
+@keyframes encourage-star-burst{0%,8%{opacity:0;transform:scale(.2)}24%{opacity:1;transform:scale(1.2)}80%{opacity:.8;transform:translate(var(--dx),var(--dy)) rotate(var(--turn))}100%{opacity:0;transform:translate(var(--dx),calc(var(--dy) - 1vw)) scale(.7)}}
+@keyframes encourage-shine{0%,25%,72%,100%{filter:brightness(1)}46%{filter:brightness(1.3) drop-shadow(0 0 .4vw #ffe8a6)}}
+@media(prefers-reduced-motion:reduce){.word-encouragement,.encourage--sparkle,.encourage--burst,.encourage--twirl{animation:encourage-reduced 1.2s both}.encourage-star,.encourage--sparkle .encourage-text{animation:none}@keyframes encourage-reduced{0%{opacity:0}15%,80%{opacity:1}100%{opacity:0}}}
+
+/* A quiet, single-line English input-method reminder. */
+#toast .tt.ime-hint{
+  box-sizing:border-box;max-width:94vw;padding:14px 30px;
+  border:2px solid #f3c681;border-radius:999px;
+  background:linear-gradient(180deg,#fffaf0,#fff0d4);color:#814720;
+  box-shadow:0 5px 16px #9c602526,inset 0 1px 0 #ffffffcc;
+  font-family:'Zen Maru Gothic','Noto Sans SC','Microsoft YaHei',sans-serif;
+  font-weight:900;font-size:clamp(16px,2.1vw,28px);line-height:1.45;
+  letter-spacing:.06em;text-align:center;white-space:nowrap;
+  transform:none;animation:ime-hint-appear .95s both;
+}
+@keyframes ime-hint-appear{
+  0%{opacity:0;transform:translateY(6px) scale(.97)}
+  15%,78%{opacity:1;transform:translateY(0) scale(1)}
+  100%{opacity:0;transform:translateY(-5px)}
+}
+@media(prefers-reduced-motion:reduce){#toast .tt.ime-hint{animation:none}}

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#fff4d9">
+  <title>噜噜快跑 · 用打字，抓住每一个单词</title>
+  <link rel="stylesheet" href="style.css?v=13">
+  <link rel="preload" as="image" href="assets/select-empty-plate.png">
+  <link rel="preload" as="image" href="assets/runner-gap-mask.svg">
+  <link rel="preload" as="image" href="assets/lumei-motion-poster.png?v=5">
+  <link rel="preload" as="image" href="assets/lulu-motion-poster.png?v=8">
+</head>
+<body>
+  <main id="app" aria-label="噜噜快跑">
+    <section class="scene active" id="home" aria-label="首页">
+      <img class="art" src="assets/home.png" alt="噜噜和噜噜妹在花香小镇奔跑" draggable="false">
+      <div class="sparkles" aria-hidden="true"></div>
+      <nav class="hotspots home-actions" aria-label="主菜单">
+        <button style="--x:3.8;--y:46.7;--w:27.1;--h:9.8" data-action="start" aria-label="开始出发"></button>
+        <button style="--x:3.8;--y:57.4;--w:25.1;--h:8.7" data-action="bank" aria-label="词库"></button>
+        <button style="--x:3.8;--y:67.0;--w:25.1;--h:8.7" data-action="records" aria-label="记录"></button>
+        <button style="--x:3.8;--y:76.7;--w:25.1;--h:8.7" data-action="settings" aria-label="设置"></button>
+      </nav>
+    </section>
+
+    <section class="scene" id="bank" aria-label="词库" hidden>
+      <img class="art" src="assets/bank.png?v=3" alt="噜噜快跑词库：四六级、雅思、日常交流" draggable="false">
+      <div class="sparkles" aria-hidden="true"></div>
+      <nav class="hotspots sub-menu" aria-label="主菜单"></nav>
+      <div class="hotspots content-hotspots">
+        <button class="bank-option" style="--x:42.9;--y:35.6;--w:12.4;--h:29.1" data-bank="academic" aria-label="选择四六级词库" aria-pressed="false"></button>
+        <button class="bank-option" style="--x:56.0;--y:35.6;--w:12.9;--h:29.1" data-bank="core" aria-label="选择雅思词库" aria-pressed="false"></button>
+        <button class="bank-option" style="--x:69.5;--y:35.6;--w:12.9;--h:29.1" data-bank="listen" aria-label="选择日常交流词库" aria-pressed="false"></button>
+        <button style="--x:43.7;--y:65.7;--w:10.8;--h:7.2" data-action="back" aria-label="返回主界面"></button>
+      </div>
+      <div class="selection-note" id="bankNote" role="status" aria-live="polite"></div>
+    </section>
+
+    <section class="scene" id="records" aria-label="记录" hidden>
+      <img class="art" src="assets/records.png?v=3" alt="噜噜快跑游戏记录" draggable="false">
+      <div class="sparkles" aria-hidden="true"></div>
+      <nav class="hotspots sub-menu" aria-label="主菜单"></nav>
+      <div class="record-values" aria-label="真实游戏记录">
+        <output id="recordDistance" class="record-value distance">0 m</output>
+        <output id="recordChapter" class="record-value chapter">0</output>
+        <output id="recordMastered" class="record-value mastered">0</output>
+        <output id="recordRuns" class="record-value runs" aria-label="奔跑次数">0</output>
+      </div>
+      <div class="hotspots content-hotspots"><button style="--x:45.9;--y:71.4;--w:10.0;--h:6.5" data-action="back" aria-label="返回首页"></button></div>
+    </section>
+
+    <section class="scene" id="settings" aria-label="设置" hidden>
+      <img class="art" src="assets/settings.png?v=3" alt="噜噜快跑设置：出题方式、发音与音量" draggable="false">
+      <div class="sparkles" aria-hidden="true"></div>
+      <nav class="hotspots sub-menu" aria-label="主菜单"></nav>
+      <div class="settings-controls">
+        <div class="setting-toggle listen-toggle" role="group" aria-label="出题方式">
+          <button data-setting="listen" data-value="true" aria-pressed="false">听写</button><button data-setting="listen" data-value="false" aria-pressed="false">看词</button>
+        </div>
+        <div class="setting-toggle voice-toggle" role="group" aria-label="单词发音">
+          <button data-setting="voice" data-value="true" aria-pressed="false">开</button><button data-setting="voice" data-value="false" aria-pressed="false">关</button>
+        </div>
+        <label class="volume music"><span class="sr-only">背景音乐音量</span><input data-volume="music" type="range" min="0" max="1" step="0.01"></label>
+        <label class="volume amb"><span class="sr-only">环境音音量</span><input data-volume="amb" type="range" min="0" max="1" step="0.01"></label>
+        <label class="volume sfx"><span class="sr-only">音效与语音音量</span><input data-volume="sfx" type="range" min="0" max="1" step="0.01"></label>
+      </div>
+      <div class="hotspots content-hotspots"><button style="--x:43.6;--y:75.8;--w:11.3;--h:7.2" data-action="back" aria-label="返回首页"></button></div>
+    </section>
+
+    <section class="scene" id="select" aria-label="选择出发角色和场景" hidden>
+      <img class="art" src="assets/select-v2.png" alt="选择噜噜或噜噜妹、游戏模式与场景" draggable="false">
+      <img class="default-runner-plate" src="assets/select-empty-plate.png" alt="" draggable="false" aria-hidden="true">
+      <div id="sceneComposition" class="scene-composition" hidden aria-hidden="true">
+        <img id="sceneBackdrop" class="composition-backdrop" src="assets/scene-street.png" alt="" draggable="false">
+        <div class="scene-podium"></div>
+        <img class="composition-characters" src="assets/characters-clean.png" alt="" draggable="false">
+        <img class="composition-cow" src="assets/characters-clean.png" alt="" draggable="false">
+        <img class="composition-left" src="assets/select-v2.png" alt="" draggable="false">
+        <img class="composition-logo" src="assets/logo-cutout.png" alt="" draggable="false">
+        <div class="composition-tagline">IELTS · TYPING · NIGHT RIDE<br><strong>用打字，抓住每一个单词</strong><i></i></div>
+        <div class="composition-note">打字跑起来<br>单词记得住！<span aria-hidden="true">⌣</span></div>
+        <img class="composition-go" src="assets/select-v2.png" alt="" draggable="false">
+      </div>
+      <div id="luluMotion" class="runner-motion" hidden>
+        <video id="luluVideo" autoplay loop muted playsinline preload="auto" poster="assets/lulu-motion-poster.png?v=8" aria-label="正在做跑步动作的噜噜"><source src="assets/lulu-motion.webm?v=8" type="video/webm"></video>
+        <img id="luluPoster" src="assets/lulu-motion-poster.png?v=8" alt="" aria-hidden="true" hidden>
+        <img id="luluFallback" data-src="assets/lulu-motion.webp?v=8" alt="正在做跑步动作的噜噜" hidden>
+      </div>
+      <div id="lumeiMotion" class="runner-motion" hidden>
+        <video id="lumeiVideo" autoplay loop muted playsinline preload="auto" poster="assets/lumei-motion-poster.png?v=5" aria-label="正在做跑步动作的噜妹"><source src="assets/lumei-motion.webm?v=5" type="video/webm"></video>
+        <img id="lumeiPoster" src="assets/lumei-motion-poster.png?v=5" alt="" aria-hidden="true" hidden>
+        <img id="lumeiFallback" data-src="assets/lumei-motion.webp?v=5" alt="正在做跑步动作的噜妹" hidden>
+      </div>
+      <div class="sparkles" aria-hidden="true"></div>
+      <div class="hotspots">
+        <button class="choice selected" style="--x:3.7;--y:26.1;--w:19.4;--h:29.7" data-group="runner" data-value="lulu" aria-label="选择水豚噜噜" aria-pressed="true"></button>
+        <button class="choice" style="--x:24.2;--y:26.1;--w:19.4;--h:29.7" data-group="runner" data-value="sister" aria-label="选择噜噜妹" aria-pressed="false"></button>
+        <button class="choice selected" style="--x:3.5;--y:80.2;--w:20.5;--h:6.1" data-group="mode" data-value="typing" aria-label="拼写模式" aria-pressed="true"></button>
+        <button class="choice" style="--x:24.7;--y:80.2;--w:20.5;--h:6.1" data-group="mode" data-value="listening" aria-label="听写模式" aria-pressed="false"></button>
+        <button class="choice selected scene-choice" style="--x:3.0;--y:89.3;--w:10.1;--h:9.0" data-group="scene" data-value="0" aria-label="暖街漫步" aria-pressed="true"><img src="assets/scene-street.png" alt=""><span>暖街漫步</span></button>
+        <button class="choice scene-choice" style="--x:13.8;--y:89.3;--w:10.1;--h:9.0" data-group="scene" data-value="1" aria-label="花园拾趣" aria-pressed="false"><img src="assets/scene-garden.png" alt=""><span>花园拾趣</span></button>
+        <button class="choice scene-choice" style="--x:24.6;--y:89.3;--w:10.1;--h:9.0" data-group="scene" data-value="2" aria-label="暖屋时光" aria-pressed="false"><img src="assets/scene-room.png" alt=""><span>暖屋时光</span></button>
+        <button class="choice scene-choice" style="--x:35.4;--y:89.3;--w:10.1;--h:9.0" data-group="scene" data-value="3" aria-label="雪夜暖梦" aria-pressed="false"><img src="assets/scene-snow.png" alt=""><span>雪夜暖梦</span></button>
+        <button style="--x:74;--y:82.8;--w:23.5;--h:12.7" data-action="play" aria-label="出发，开始游戏"></button>
+        <button class="back" data-action="back" aria-label="返回首页"><span aria-hidden="true">←</span> 返回 <small>BACK</small></button>
+      </div>
+    </section>
+
+    <section class="scene game-scene" id="game" aria-label="逃离遗忘游戏" hidden>
+      <iframe id="gameFrame" title="逃离遗忘打字游戏" loading="eager"></iframe>
+      <button id="homeButton" aria-label="返回噜噜快跑首页" title="返回首页">⌂</button>
+    </section>
+  </main>
+  <script src="script.js?v=18"></script>
+  <script defer src="assets/cow-rig.js?v=13"></script>
+</body>
+</html>
